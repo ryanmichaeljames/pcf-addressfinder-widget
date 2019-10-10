@@ -1,9 +1,8 @@
-.Rmj\.AddressFinderWidget input {
-  font-family: "SegoeUI", "Segoe UI";
-  font-size: 14px;
+.Pcf\.AddressFinderWidget input {
   font-weight: 600;
   line-height: 2.5rem;
   height: 2.5rem;
+  width: 100%;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   border: 0.8px solid #ffffff;
@@ -11,7 +10,7 @@
   box-sizing: border-box;
 }
 
-.Rmj\.AddressFinderWidget input:hover {
+.Pcf\.AddressFinderWidget input:hover {
   border: 0.8px solid #666666;
   font-weight: 400;
 }
