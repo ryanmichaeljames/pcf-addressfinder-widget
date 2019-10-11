@@ -65,7 +65,7 @@ This project uses [SemVer](http://semver.org/) for versioning. For the versions 
 
 ## License
 
-This project is distributed under the The GNU General Public License. See [LICENSE](LICENSE) more information.
+This project is distributed under the MIT License. See [LICENSE](LICENSE) more information.
 
 ## Acknowledgements
 
