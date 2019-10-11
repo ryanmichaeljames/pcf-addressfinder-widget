@@ -1,6 +1,6 @@
-# pcf-addressfinder-widget
+# PCF AddressFinder Widget
 
-The PCF AddressFinder Widget is a [PowerApps Component Framework](https://docs.microsoft.com/en-us/powerapps/developer/component-framework/overview) (PCF) control the uses the [AddressFinder JavaScript Widget](https://addressfinder.nz/docs/widget_docs/) to search for New Zealand addresses.
+The PCF AddressFinder Widget is a [PowerApps Component Framework](https://docs.microsoft.com/en-us/powerapps/developer/component-framework/overview) (PCF) control for Dynamics 365 and Common Data Service (CDS) the uses the [AddressFinder JavaScript Widget](https://addressfinder.nz/docs/widget_docs/) to search for New Zealand addresses.
 
 ![Demo](/docs/images/demo.gif?raw=true)
 
