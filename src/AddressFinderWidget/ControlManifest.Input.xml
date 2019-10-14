@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="Pcf" constructor="AddressFinderWidget" version="1.1.10" display-name-key="AddressFinder Widget" description-key="AddressFinder Widget" control-type="standard">
+  <control namespace="Pcf" constructor="AddressFinderWidget" version="1.1.15" display-name-key="AddressFinder Widget" description-key="AddressFinder Widget" control-type="standard">
     <property name="address_line_1" display-name-key="Line 1" description-key="The address line 1." of-type="SingleLine.Text" usage="bound" required="false" />
     <property name="address_line_2" display-name-key="Line 2" description-key="The address line 2." of-type="SingleLine.Text" usage="bound" required="false" />
     <property name="city" display-name-key="City" description-key="The address city." of-type="SingleLine.Text" usage="bound" required="false" />
