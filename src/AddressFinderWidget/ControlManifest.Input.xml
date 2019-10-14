@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="Pcf" constructor="AddressFinderWidget" version="0.0.1" display-name-key="AddressFinder Widget" description-key="AddressFinder Widget" control-type="standard">
-    <!-- property node identifies a specific, configurable piece of data that the control expects from CDS -->
+  <control namespace="Pcf" constructor="AddressFinderWidget" version="1.1.10" display-name-key="AddressFinder Widget" description-key="AddressFinder Widget" control-type="standard">
     <property name="address_line_1" display-name-key="Line 1" description-key="The address line 1." of-type="SingleLine.Text" usage="bound" required="false" />
     <property name="address_line_2" display-name-key="Line 2" description-key="The address line 2." of-type="SingleLine.Text" usage="bound" required="false" />
     <property name="city" display-name-key="City" description-key="The address city." of-type="SingleLine.Text" usage="bound" required="false" />
@@ -9,36 +8,16 @@
     <property name="postcode" display-name-key="Post Code" description-key="The address post code." of-type="SingleLine.Text" usage="bound" required="false" />
     <property name="country" display-name-key="Country" description-key="The address country." of-type="SingleLine.Text" usage="bound" required="false" />
     <property name="api_key" display-name-key="API Key" description-key="Your AddressFinder API Key." of-type="SingleLine.Text" usage="input" required="true" />
-    <!-- 
-      Property node's of-type attribute can be of-type-group attribute. 
-      Example:
-      <type-group name="numbers">
-        <type>Whole.None</type>
-        <type>Currency</type>
-        <type>FP</type>
-        <type>Decimal</type>
-      </type-group>
-      <property name="sampleProperty" display-name-key="Property_Display_Key" description-key="Property_Desc_Key" of-type-group="numbers" usage="bound" required="true" />
-    -->
+    <property name="options_empty_content" display-name-key="Options: Empty Content" description-key="Message to display to users when there are no found addresses or locations." of-type="SingleLine.Text" usage="input" required="false" />
+    <property name="options_ignore_returns" display-name-key="Options: Ignore Returns" description-key="Ignore the use of the enter key when no list item is selected. (Default: true)" of-type="SingleLine.Text" usage="input" required="false" />
+    <property name="options_max_results" display-name-key="Options: Max Results" description-key="Maximum number of results to display. (Default: 10)" of-type="Whole.None" usage="input" required="false" />
+    <property name="options_show_addresses" display-name-key="Options: Show Addresses" description-key="Set to false to hide address results. (Deafualt: true)" of-type="SingleLine.Text" usage="input" required="false" />
+    <property name="options_show_locations" display-name-key="Options: Show Locations" description-key="Set to true to return locationresults. (Deafult: false)" of-type="SingleLine.Text" usage="input" required="false" />
+    <property name="options_show_nearby" display-name-key="Options: Show Nearby" description-key="Enable the nearby address helper. (Default: false)" of-type="SingleLine.Text" usage="input" required="false" />
+    <property name="options_show_points_of_interest" display-name-key="Options: Show Points of Interest" description-key="Set to true to return points of interest results. (Default: false)" of-type="SingleLine.Text" usage="input" required="false" />
     <resources>
       <code path="index.ts" order="1"/>
       <css path="css/AddressFinderWidget.css" order="1" />
-      <!-- UNCOMMENT TO ADD MORE RESOURCES
-      <css path="css/AddressFinderWidget.css" order="1" />
-      <resx path="strings/AddressFinderWidget.1033.resx" version="1.0.0" />
-      -->
     </resources>
-    <!-- UNCOMMENT TO ENABLE THE SPECIFIED API
-    <feature-usage>
-      <uses-feature name="Device.captureAudio" required="true" />
-      <uses-feature name="Device.captureImage" required="true" />
-      <uses-feature name="Device.captureVideo" required="true" />
-      <uses-feature name="Device.getBarcodeValue" required="true" />
-      <uses-feature name="Device.getCurrentPosition" required="true" />
-      <uses-feature name="Device.pickFile" required="true" />
-      <uses-feature name="Utility" required="true" />
-      <uses-feature name="WebAPI" required="true" />
-    </feature-usage>
-    -->
   </control>
 </manifest>

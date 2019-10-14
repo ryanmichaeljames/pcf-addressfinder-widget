@@ -27,7 +27,7 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 	 * Constructor.
 	 */
 	constructor() {
-		this.AddressFinder = require("./widget");		
+		this.AddressFinder = require("./widget");
 	}
 
 	/**
@@ -73,7 +73,7 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 			city: this._city,
 			suburb: this._suburb,
 			postcode: this._postcode,
-			country: this._country,
+			country: this._country
 		};
 	}
 
@@ -92,7 +92,8 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 		this.Widget = new this.AddressFinder.Widget(
 			document.getElementById("addressfinder_search"),
 			this._context.parameters.api_key.raw,
-			"NZ"
+			"NZ",
+			this.getOptions()
 		);
 
 		this.Widget.on("result:select", (fullAddress: any, metaData: any) => {
@@ -115,5 +116,44 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 		this._inputElement.setAttribute("type", "text");
 		this._inputElement.value = this._address_line_1;
 		this._container.appendChild(this._inputElement);
+	}
+
+	/** 
+	 * Build the AddressFinder options object.
+	 * @returns an object containing the AddressFinder Widget options
+	 */
+	private getOptions(): object {
+		var options: { [k: string]: any } = {};
+		options.address_params = {};
+
+		// Empty content
+		if (this._context.parameters.options_empty_content.raw != null && this._context.parameters.options_empty_content.raw != "")
+			options.empty_content = this._context.parameters.options_empty_content.raw;
+
+		// Ignore returns
+		if (this._context.parameters.options_ignore_returns.raw == "false")
+			options.ignore_returns = false;
+
+		// Max results
+		if (this._context.parameters.options_max_results.raw != null)
+			options.max_results = this._context.parameters.options_max_results.raw;
+
+		// Show addresses
+		if (this._context.parameters.options_show_addresses.raw == "false")
+			options.show_addresses = false;
+
+		// Show locations
+		if (this._context.parameters.options_show_locations.raw == "true")
+			options.show_locations = true;
+
+		// Show nearby
+		if (this._context.parameters.options_show_nearby.raw == "true")
+			options.show_nearby = true;
+
+		// Show points of interest
+		if (this._context.parameters.options_show_points_of_interest.raw == "true")
+			options.show_points_of_interest = true;
+
+		return options;
 	}
 }
