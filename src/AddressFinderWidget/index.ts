@@ -97,11 +97,14 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 		);
 
 		this.Widget.on("result:select", (fullAddress: any, metaData: any) => {
-			this._address_line_1 = metaData.address_line_1 != null ? metaData.address_line_1 : "";
-			this._address_line_2 = metaData.address_line_2 != null ? metaData._address_line_2 : "";
-			this._city = metaData.city != null ? metaData.city : "";
-			this._suburb = metaData.suburb != null ? metaData.suburb : "";
-			this._postcode = metaData.postcode != null ? metaData.postcode : "";
+
+			var selected = new this.AddressFinder.NZSelectedAddress(fullAddress, metaData);
+
+			this._address_line_1 = selected.address_line_1();
+			this._address_line_2 = selected.address_line_2();
+			this._suburb = selected.suburb();
+			this._city = selected.city();
+			this._postcode = selected.postcode();
 			this._country = "New Zealand";
 			this._notifyOutputChanged();
 		});
