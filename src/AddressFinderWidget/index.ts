@@ -11,6 +11,10 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 	// Reference to PowerApps component framework Context object
 	private _context: ComponentFramework.Context<IInputs>;
 
+	// AddressFinder params
+	private _country_code: string | null;
+	private _options: object;
+
 	// AddressFinder fields
 	private _address_line_1: string;
 	private _address_line_2: string;
@@ -48,6 +52,15 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 		// Initialize the container
 		this.initContainter();
 		container = this._container;
+
+		// Country code
+		if (this._context.parameters.country_code.raw != null && this._context.parameters.country_code.raw != "")
+			this._country_code = this._context.parameters.country_code.raw;
+		else
+			this._country_code = "NZ"
+
+		// Options
+		this._options = this.getOptions;
 
 		// Initialize AddressFinder widget
 		this.initAddressFinder();
@@ -92,20 +105,32 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 		this.Widget = new this.AddressFinder.Widget(
 			document.getElementById("addressfinder_search"),
 			this._context.parameters.api_key.raw,
-			"NZ",
-			this.getOptions()
+			this._country_code,
+			this._options
 		);
 
 		this.Widget.on("result:select", (fullAddress: any, metaData: any) => {
 
-			var selected = new this.AddressFinder.NZSelectedAddress(fullAddress, metaData);
+			switch (this._country_code) {
+				case "NZ":
+					var selected = new this.AddressFinder.NZSelectedAddress(fullAddress, metaData);
+					this._address_line_1 = selected.address_line_1();
+					this._address_line_2 = selected.address_line_2();
+					this._suburb = selected.suburb();
+					this._city = selected.city();
+					this._postcode = selected.postcode();
+					this._country = "New Zealand";
+					break;
+				case "AU":
+					this._address_line_1 = metaData.address_line_1;
+					this._address_line_2 = metaData.address_line_2;
+					this._suburb = metaData.locality_name;
+					this._city = metaData.state_territory;
+					this._postcode = metaData.postcode;
+					this._country = "Australia";
+					break;
+			}
 
-			this._address_line_1 = selected.address_line_1();
-			this._address_line_2 = selected.address_line_2();
-			this._suburb = selected.suburb();
-			this._city = selected.city();
-			this._postcode = selected.postcode();
-			this._country = "New Zealand";
 			this._notifyOutputChanged();
 		});
 	};

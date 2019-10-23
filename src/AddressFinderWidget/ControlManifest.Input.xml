@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="Pcf" constructor="AddressFinderWidget" version="1.1.16" display-name-key="AddressFinder Widget" description-key="AddressFinder Widget" control-type="standard">
+  <control namespace="Pcf" constructor="AddressFinderWidget" version="1.2.0" display-name-key="AddressFinder Widget" description-key="AddressFinder Widget" control-type="standard">
+    <property name="api_key" display-name-key="API Key" description-key="Your AddressFinder API Key." of-type="SingleLine.Text" usage="input" required="true" />
+    <property name="country_code" display-name-key="Country Code" description-key="The country code you want to search against (NZ/AU). (Default: NZ)" of-type="SingleLine.Text" usage="input" required="false" />
     <property name="address_line_1" display-name-key="Line 1" description-key="The address line 1." of-type="SingleLine.Text" usage="bound" required="false" />
     <property name="address_line_2" display-name-key="Line 2" description-key="The address line 2." of-type="SingleLine.Text" usage="bound" required="false" />
     <property name="city" display-name-key="City" description-key="The address city." of-type="SingleLine.Text" usage="bound" required="false" />
     <property name="suburb" display-name-key="Suburb" description-key="The address suburb." of-type="SingleLine.Text" usage="bound" required="false" />
     <property name="postcode" display-name-key="Post Code" description-key="The address post code." of-type="SingleLine.Text" usage="bound" required="false" />
     <property name="country" display-name-key="Country" description-key="The address country." of-type="SingleLine.Text" usage="bound" required="false" />
-    <property name="api_key" display-name-key="API Key" description-key="Your AddressFinder API Key." of-type="SingleLine.Text" usage="input" required="true" />
     <property name="options_empty_content" display-name-key="Options: Empty Content" description-key="Message to display to users when there are no found addresses or locations." of-type="SingleLine.Text" usage="input" required="false" />
     <property name="options_ignore_returns" display-name-key="Options: Ignore Returns" description-key="Ignore the use of the enter key when no list item is selected. (Default: true)" of-type="SingleLine.Text" usage="input" required="false" />
     <property name="options_max_results" display-name-key="Options: Max Results" description-key="Maximum number of results to display. (Default: 10)" of-type="Whole.None" usage="input" required="false" />
