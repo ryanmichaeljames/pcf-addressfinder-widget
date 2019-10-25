@@ -18,10 +18,14 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 	// AddressFinder fields
 	private _address_line_1: string;
 	private _address_line_2: string;
-	private _city: string;
-	private _suburb: string;
+	private _suburb: string; // NZ only
+	private _city: string; // NZ only
+	private _locality_name: string; // AU only
+	private _state_territory: string; // AU only
 	private _postcode: string;
 	private _country: string;
+	private _latitude: string;
+	private _longitude: string;
 
 	// AddressFinder widget
 	private AddressFinder: any;
@@ -85,8 +89,12 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 			address_line_2: this._address_line_2,
 			city: this._city,
 			suburb: this._suburb,
+			locality_name: this._locality_name,
+			state_territory: this._state_territory,
 			postcode: this._postcode,
-			country: this._country
+			country: this._country,
+			latitude: this._latitude,
+			longitude: this._longitude
 		};
 	}
 
@@ -120,6 +128,8 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 					this._city = selected.city();
 					this._postcode = selected.postcode();
 					this._country = "New Zealand";
+					this._latitude = selected.metaData.y;
+					this._longitude = selected.metaData.x
 					break;
 				case "AU":
 					this._address_line_1 = metaData.address_line_1;
@@ -128,6 +138,8 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 					this._city = metaData.state_territory;
 					this._postcode = metaData.postcode;
 					this._country = "Australia";
+					this._latitude = metaData.latitude;
+					this._longitude = metaData.longitude
 					break;
 			}
 
