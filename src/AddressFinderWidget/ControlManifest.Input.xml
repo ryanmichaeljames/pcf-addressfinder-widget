@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="Pcf" constructor="AddressFinderWidget" version="1.2.2" display-name-key="AddressFinder Widget" description-key="AddressFinder Widget" control-type="standard">
+  <control namespace="Pcf" constructor="AddressFinderWidget" version="1.2.3" display-name-key="AddressFinder Widget" description-key="AddressFinder Widget" control-type="standard">
     <property name="api_key" display-name-key="API Key" description-key="Your AddressFinder API Key." of-type="SingleLine.Text" usage="input" required="true" />
     <property name="country_code" display-name-key="Country Code" description-key="The country code you want to search against (NZ/AU). (Default: NZ)" of-type="SingleLine.Text" usage="input" required="false" />
     <property name="address_line_1" display-name-key="Line 1" description-key="The address line 1." of-type="SingleLine.Text" usage="bound" required="false" />
