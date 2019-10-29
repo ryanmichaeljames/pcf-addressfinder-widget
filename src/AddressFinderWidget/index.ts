@@ -98,7 +98,7 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 		// 	longitude: this._longitude
 		// };
 
-		// Work around until MS bug 1505831 is resolved
+		// Work around until PCF bug 1505831 is resolved by Micrososft
 		// see https://powerusers.microsoft.com/t5/PowerApps-Component-Framework/BUG-Non-required-parameters-not-bound/td-p/307838
 		
 		var output: { [k: string]: any } = {};
