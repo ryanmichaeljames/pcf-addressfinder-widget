@@ -84,18 +84,56 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 	 * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
 	 */
 	public getOutputs(): IOutputs {
-		return {
-			address_line_1: this._address_line_1,
-			address_line_2: this._address_line_2,
-			city: this._city,
-			suburb: this._suburb,
-			locality_name: this._locality_name,
-			state_territory: this._state_territory,
-			postcode: this._postcode,
-			country: this._country,
-			latitude: this._latitude,
-			longitude: this._longitude
-		};
+
+		// return {
+		// 	address_line_1: this._address_line_1,
+		// 	address_line_2: this._address_line_2,
+		// 	suburb: this._suburb,
+		// 	city: this._city,
+		// 	locality_name: this._locality_name,
+		// 	state_territory: this._state_territory,
+		// 	postcode: this._postcode,
+		// 	country: this._country,
+		// 	latitude: this._latitude,
+		// 	longitude: this._longitude
+		// };
+
+		// Work around until MS bug 1505831 is resolved
+		// see https://powerusers.microsoft.com/t5/PowerApps-Component-Framework/BUG-Non-required-parameters-not-bound/td-p/307838
+		
+		var output: { [k: string]: any } = {};
+
+		if (this._context.parameters.address_line_1.type != null)
+			output.address_line_1 = this._address_line_1;
+
+		if (this._context.parameters.address_line_2.type != null)
+			output.address_line_2 = this._address_line_2;
+
+		if (this._context.parameters.suburb.type != null)
+			output.suburb = this._suburb;
+
+		if (this._context.parameters.city.type != null)
+			output.city = this._city;
+
+		if (this._context.parameters.locality_name.type != null)
+			output.locality_name = this._locality_name;
+
+		if (this._context.parameters.state_territory.type != null)
+			output.state_territory = this._state_territory;
+
+		if (this._context.parameters.postcode.type != null)
+			output.postcode = this._postcode;
+
+		if (this._context.parameters.country.type != null)
+			output.country = this._country;
+
+		if (this._context.parameters.latitude.type != null)
+			output.latitude = this._latitude;
+
+		if (this._context.parameters.longitude.type != null)
+			output.longitude = this._longitude;
+
+		return output;
 	}
 
 	/** 
@@ -117,10 +155,22 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 			this._options
 		);
 
-		this.Widget.on("result:select", (fullAddress: any, metaData: any) => {
-
-			switch (this._country_code) {
-				case "NZ":
+		switch (this._country_code) {
+			case "AU":
+				this.Widget.on("result:select", (fullAddress: any, metaData: any) => {
+					this._address_line_1 = metaData.address_line_1;
+					this._address_line_2 = metaData.address_line_2;
+					this._locality_name = metaData.locality_name;
+					this._state_territory = metaData.state_territory;
+					this._postcode = metaData.postcode;
+					this._country = "Australia";
+					this._latitude = metaData.latitude;
+					this._longitude = metaData.longitude;
+					this._notifyOutputChanged();
+				});
+				break;
+			default: // NZ
+				this.Widget.on("result:select", (fullAddress: any, metaData: any) => {
 					var selected = new this.AddressFinder.NZSelectedAddress(fullAddress, metaData);
 					this._address_line_1 = selected.address_line_1();
 					this._address_line_2 = selected.address_line_2();
@@ -129,22 +179,11 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 					this._postcode = selected.postcode();
 					this._country = "New Zealand";
 					this._latitude = selected.metaData.y;
-					this._longitude = selected.metaData.x
-					break;
-				case "AU":
-					this._address_line_1 = metaData.address_line_1;
-					this._address_line_2 = metaData.address_line_2;
-					this._suburb = metaData.locality_name;
-					this._city = metaData.state_territory;
-					this._postcode = metaData.postcode;
-					this._country = "Australia";
-					this._latitude = metaData.latitude;
-					this._longitude = metaData.longitude
-					break;
-			}
-
-			this._notifyOutputChanged();
-		});
+					this._longitude = selected.metaData.x;
+					this._notifyOutputChanged();
+				});
+				break;
+		}
 	};
 
 	/** 
