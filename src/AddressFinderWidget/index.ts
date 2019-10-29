@@ -11,13 +11,21 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 	// Reference to PowerApps component framework Context object
 	private _context: ComponentFramework.Context<IInputs>;
 
+	// AddressFinder params
+	private _country_code: string | null;
+	private _options: object;
+
 	// AddressFinder fields
 	private _address_line_1: string;
 	private _address_line_2: string;
-	private _city: string;
-	private _suburb: string;
+	private _suburb: string; // NZ only
+	private _city: string; // NZ only
+	private _locality_name: string; // AU only
+	private _state_territory: string; // AU only
 	private _postcode: string;
 	private _country: string;
+	private _latitude: string;
+	private _longitude: string;
 
 	// AddressFinder widget
 	private AddressFinder: any;
@@ -49,6 +57,15 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 		this.initContainter();
 		container = this._container;
 
+		// Country code
+		if (this._context.parameters.country_code.raw != null && this._context.parameters.country_code.raw != "")
+			this._country_code = this._context.parameters.country_code.raw;
+		else
+			this._country_code = "NZ"
+
+		// Options
+		this._options = this.getOptions;
+
 		// Initialize AddressFinder widget
 		this.initAddressFinder();
 	}
@@ -67,14 +84,56 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 	 * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
 	 */
 	public getOutputs(): IOutputs {
-		return {
-			address_line_1: this._address_line_1,
-			address_line_2: this._address_line_2,
-			city: this._city,
-			suburb: this._suburb,
-			postcode: this._postcode,
-			country: this._country
-		};
+
+		// return {
+		// 	address_line_1: this._address_line_1,
+		// 	address_line_2: this._address_line_2,
+		// 	suburb: this._suburb,
+		// 	city: this._city,
+		// 	locality_name: this._locality_name,
+		// 	state_territory: this._state_territory,
+		// 	postcode: this._postcode,
+		// 	country: this._country,
+		// 	latitude: this._latitude,
+		// 	longitude: this._longitude
+		// };
+
+		// Work around until PCF bug 1505831 is resolved by Micrososft
+		// see https://powerusers.microsoft.com/t5/PowerApps-Component-Framework/BUG-Non-required-parameters-not-bound/td-p/307838
+		
+		var output: { [k: string]: any } = {};
+
+		if (this._context.parameters.address_line_1.type != null)
+			output.address_line_1 = this._address_line_1;
+
+		if (this._context.parameters.address_line_2.type != null)
+			output.address_line_2 = this._address_line_2;
+
+		if (this._context.parameters.suburb.type != null)
+			output.suburb = this._suburb;
+
+		if (this._context.parameters.city.type != null)
+			output.city = this._city;
+
+		if (this._context.parameters.locality_name.type != null)
+			output.locality_name = this._locality_name;
+
+		if (this._context.parameters.state_territory.type != null)
+			output.state_territory = this._state_territory;
+
+		if (this._context.parameters.postcode.type != null)
+			output.postcode = this._postcode;
+
+		if (this._context.parameters.country.type != null)
+			output.country = this._country;
+
+		if (this._context.parameters.latitude.type != null)
+			output.latitude = this._latitude;
+
+		if (this._context.parameters.longitude.type != null)
+			output.longitude = this._longitude;
+
+		return output;
 	}
 
 	/** 
@@ -92,22 +151,39 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 		this.Widget = new this.AddressFinder.Widget(
 			document.getElementById("addressfinder_search"),
 			this._context.parameters.api_key.raw,
-			"NZ",
-			this.getOptions()
+			this._country_code,
+			this._options
 		);
 
-		this.Widget.on("result:select", (fullAddress: any, metaData: any) => {
-
-			var selected = new this.AddressFinder.NZSelectedAddress(fullAddress, metaData);
-
-			this._address_line_1 = selected.address_line_1();
-			this._address_line_2 = selected.address_line_2();
-			this._suburb = selected.suburb();
-			this._city = selected.city();
-			this._postcode = selected.postcode();
-			this._country = "New Zealand";
-			this._notifyOutputChanged();
-		});
+		switch (this._country_code) {
+			case "AU":
+				this.Widget.on("result:select", (fullAddress: any, metaData: any) => {
+					this._address_line_1 = metaData.address_line_1;
+					this._address_line_2 = metaData.address_line_2;
+					this._locality_name = metaData.locality_name;
+					this._state_territory = metaData.state_territory;
+					this._postcode = metaData.postcode;
+					this._country = "Australia";
+					this._latitude = metaData.latitude;
+					this._longitude = metaData.longitude;
+					this._notifyOutputChanged();
+				});
+				break;
+			default: // NZ
+				this.Widget.on("result:select", (fullAddress: any, metaData: any) => {
+					var selected = new this.AddressFinder.NZSelectedAddress(fullAddress, metaData);
+					this._address_line_1 = selected.address_line_1();
+					this._address_line_2 = selected.address_line_2();
+					this._suburb = selected.suburb();
+					this._city = selected.city();
+					this._postcode = selected.postcode();
+					this._country = "New Zealand";
+					this._latitude = selected.metaData.y;
+					this._longitude = selected.metaData.x;
+					this._notifyOutputChanged();
+				});
+				break;
+		}
 	};
 
 	/** 

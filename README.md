@@ -71,6 +71,18 @@ Option: Show Points of Interest | Boolean | `false` | Set to true to return poin
 
 > For more information regarding the AddressFinder options see the options section of the AddressFinder Widget [documentation](https://addressfinder.nz/docs/widget_docs).
 
+### New Zealand vs Australian addresses
+
+By default, the AddressFinder Widget control will return New Zealand addresses, even if the `Country Code` input property is not set. To return Australian addresses the `Country Code` property must be set to `AU`.
+
+There are a few subtle differences in the properties that are populated between New Zealand and Australian addresses. This is due to the AddressFinder API returning different properties in the search responses for each country. As a result, the following output properties are only populated by their respective countries.
+
+Property | Country
+--- | ---
+City | New Zealand
+Suburb | New Zealand
+Locality | Australia
+State/Territory | Australia
 
 ## Roadmap
 
