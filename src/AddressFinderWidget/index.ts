@@ -1,4 +1,5 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
+import { MedaData } from "./typings/AddressFinder";
 
 export class AddressFinderWidget implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 	// PowerApps component framework delegate which will be assigned to this object which would be called whenever any update happens.
@@ -27,6 +28,9 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 	private _latitude: string;
 	private _longitude: string;
 
+	// Line 1 Override
+	private _line_format: string;
+
 	// AddressFinder widget
 	private AddressFinder: any;
 	private Widget: any;
@@ -45,13 +49,14 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 	 * @param notifyOutputChanged A callback method to alert the framework that the control has new outputs ready to be retrieved asynchronously.
 	 * @param state A piece of data that persists in one session for a single user. Can be set at any point in a controls life cycle by calling "setControlState" in the Mode interface.
 	 * @param container If a control is marked control-type="standard", it will receive an empty div element within which it can render its content.
-	 */
+	*/
 	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
 		this._context = context;
 		this._notifyOutputChanged = notifyOutputChanged;
 		this._container = container;
 
 		this._address_line_1 = this._context.parameters.address_line_1.raw != null ? this._context.parameters.address_line_1.raw : "";
+		this._line_format = this._context.parameters.line_format.raw != null ? this._context.parameters.line_format.raw : "";
 
 		// Initialize the container
 		this.initContainter();
@@ -170,16 +175,34 @@ export class AddressFinderWidget implements ComponentFramework.StandardControl<I
 				});
 				break;
 			default: // NZ
-				this.Widget.on("result:select", (fullAddress: any, metaData: any) => {
+				this.Widget.on("result:select", (fullAddress: any, metaData: MedaData) => {
 					var selected = new this.AddressFinder.NZSelectedAddress(fullAddress, metaData);
-					this._address_line_1 = selected.address_line_1();
-					this._address_line_2 = selected.address_line_2();
+					let unit = metaData.unit_identifier ? `${metaData.unit_identifier}/` : "";
+					let alpha = metaData.alpha ? metaData.alpha : "";
+					let stNum = `${unit}${metaData.number}${alpha}`;
+
+					if(this._line_format == "short"){
+						this._address_line_1 = `${stNum} ${metaData.street}`;
+					}else if(this._line_format == "long"){
+						let unit_type = metaData.unit_type ? `${metaData.unit_type} ` : "";
+						this._address_line_1 = `${unit_type}${stNum} ${metaData.street}`;
+					}else if(this._line_format == "split"){
+						this._address_line_1 = stNum;
+						this._address_line_2 = `${metaData.street}`;
+					}else if(this._line_format == "split_long"){
+						let unit_type = metaData.unit_type ? `${metaData.unit_type} ` : "";
+						this._address_line_1 = `${unit_type}${stNum}`;
+						this._address_line_2 = `${metaData.street}`;
+					}else{
+						this._address_line_1 = selected.address_line_1();
+						this._address_line_2 = selected.address_line_2();
+					}
 					this._suburb = selected.suburb();
 					this._city = selected.city();
 					this._postcode = selected.postcode();
 					this._country = "New Zealand";
-					this._latitude = selected.metaData.y;
-					this._longitude = selected.metaData.x;
+					this._latitude = metaData.y;
+					this._longitude = metaData.x;
 					this._notifyOutputChanged();
 				});
 				break;

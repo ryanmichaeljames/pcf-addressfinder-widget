@@ -20,6 +20,7 @@
     <property name="options_show_locations" display-name-key="Options: Show Locations" description-key="Set to true to return locationresults. (Deafult: false)" of-type="SingleLine.Text" usage="input" required="false" />
     <property name="options_show_nearby" display-name-key="Options: Show Nearby" description-key="Enable the nearby address helper. (Default: false)" of-type="SingleLine.Text" usage="input" required="false" />
     <property name="options_show_points_of_interest" display-name-key="Options: Show Points of Interest" description-key="Set to true to return points of interest results. (Default: false)" of-type="SingleLine.Text" usage="input" required="false" />
+    <property name="line_format" display-name-key="Lines Format" description-key="Set to change the format of line 1 and 2. (short, long, split, split_long, none) (Default: none)" of-type="SingleLine.Text" usage="input" required="false"/>
     <resources>
       <code path="index.ts" order="1"/>
       <css path="css/AddressFinderWidget.css" order="1" />

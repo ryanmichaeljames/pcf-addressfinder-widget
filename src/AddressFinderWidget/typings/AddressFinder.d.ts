@@ -1,0 +1,33 @@
+export interface MedaData {
+    a: string;
+    postal: string;
+    building_name: string;
+    unit_type: string;
+    unit_identifier: string;
+    floor: string;
+    number: string;
+    alpha: string;
+    street: string;
+    street_name: string;
+    street_type: string;
+    suburb: string;
+    city: string;
+    box_type: string;
+    lobby_name: string;
+    rd_number: string;
+    post_suburb: string;
+    mailtown: string;
+    postcode: string;
+    dpid: string;
+    primary_parcel_id: string;
+    aims_address_id: string;
+    y: string;
+    x: string;
+    rural: boolean;
+    region: string;
+    ta : string;
+    address_line_1: string;
+    address_line_2: string;
+    pxid: string;
+    success: boolean;
+}
